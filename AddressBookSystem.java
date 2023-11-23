@@ -12,6 +12,15 @@ public class AddressBookSystem {
     public void addContact(Contact contact) {
         contactList.put(contact.getName(), contact);
     }
+
+    public void deleteContact(String name) {
+        if(contactList.containsKey(name)) {
+            contactList.remove(name);
+            System.out.println("Contact found and deleted");
+        } else {
+            System.out.println("Contact not found.");
+        }
+    }
     
     public Contact getContactbyName(String name) {
         if(contactList.containsKey(name)) {
@@ -45,6 +54,10 @@ public class AddressBookSystem {
         addressBook.addContact(contact1);
 
         addressBook.askForEditContact(sc);
+
+        System.out.println("Enter name of contact to delete");
+        String contactToDelete = sc.nextLine();
+        addressBook.deleteContact(contactToDelete);
         sc.close();
     }
 }
