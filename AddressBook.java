@@ -131,7 +131,17 @@ public class AddressBook {
     public void sortByName() {
     contactList.sort(Comparator.comparing(Contact::getFirstName));
 }
+public void sortByCity() {
+    contactList.sort(Comparator.comparing(Contact::getCity));
+}
 
+public void sortByState() {
+    contactList.sort(Comparator.comparing(Contact::getState));
+}
+
+public void sortByZip() {
+    contactList.sort(Comparator.comparing(Contact::getZipCode));
+}
     
 }
 

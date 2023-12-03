@@ -91,6 +91,19 @@ public class AddressBookSystem {
         System.out.println("Sorted Contacts by Name:");
         addressBook1.contactList.forEach(System.out::println);
 
+        // UC 12: Sort entries by City, State, or Zip
+        System.out.println("Sorting by City:");
+        addressBook1.sortByCity();
+        addressBook1.contactList.forEach(System.out::println);
+
+        System.out.println("Sorting by State:");
+        addressBook1.sortByState();
+        addressBook1.contactList.forEach(System.out::println);
+
+        System.out.println("Sorting by Zip:");
+        addressBook1.sortByZip();
+        addressBook1.contactList.forEach(System.out::println);
+
     }
 
     private static void displaySearchResult(String addressBookName, List<Contact> result) {
