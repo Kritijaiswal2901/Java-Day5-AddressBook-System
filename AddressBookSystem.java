@@ -76,8 +76,19 @@ public class AddressBookSystem {
         List<Contact> personsByState = addressBook2.viewPersonsByState(viewState);
         displayViewResult("State", personsByState);
 
-    }
+    // UC 10: Count Persons by City or State
+    System.out.print("Enter the city to count persons: ");
+    String countCity = sc.nextLine();
+    long countByCity = addressBook1.countPersonsByCity(countCity);
+    System.out.println("Number of persons in " + countCity + ": " + countByCity);
 
+    System.out.print("Enter the state to count persons: ");
+    String countState = sc.nextLine();
+    long countByState = addressBook2.countPersonsByState(countState);
+    System.out.println("Number of persons in " + countState + ": " + countByState);
+
+    sc.close();
+    }
     private static void displaySearchResult(String addressBookName, List<Contact> result) {
         System.out.println("Search result in " + addressBookName + ":");
         if (result.isEmpty()) {

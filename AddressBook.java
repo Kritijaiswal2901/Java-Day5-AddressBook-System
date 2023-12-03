@@ -114,6 +114,19 @@ public class AddressBook {
     private boolean isDuplicate(Contact contact) {
         return contactList.stream().anyMatch(c -> c.equals(contact));
     }
+
+    public long countPersonsByCity(String city) {
+        return contactList.stream()
+                .filter(contact -> contact.getCity().equalsIgnoreCase(city))
+                .count();
+    }
+    
+    public long countPersonsByState(String state) {
+        return contactList.stream()
+                .filter(contact -> contact.getState().equalsIgnoreCase(state))
+                .count();
+    }
+    
 }
 
 
