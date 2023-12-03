@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,6 +127,11 @@ public class AddressBook {
                 .filter(contact -> contact.getState().equalsIgnoreCase(state))
                 .count();
     }
+
+    public void sortByName() {
+    contactList.sort(Comparator.comparing(Contact::getFirstName));
+}
+
     
 }
 

@@ -35,19 +35,18 @@ public class AddressBookSystem {
         // Use case: Adding contacts with duplicate check
         addressBook.insertContact(sc);
 
-       // Display all contacts in the address book
-       System.out.println("All Contacts:");
-         addressBook1.contactList.forEach(Contact::printContact);
+        // Display all contacts in the address book
+        System.out.println("All Contacts:");
+        addressBook1.contactList.forEach(Contact::printContact);
 
-
-          // UC 7: Duplicate Check
-          if (addressBook1.checkForDuplicate()) {
+        // UC 7: Duplicate Check
+        if (addressBook1.checkForDuplicate()) {
             System.out.println("Duplicate found in Address Book 1.");
         } else {
             System.out.println("No duplicate found in Address Book 1.");
         }
 
-// UC 8: Search Person in City or State across multiple AddressBooksjkfjdf
+        // UC 8: Search Person in City or State across multiple AddressBooksjkfjdf
         System.out.print("Enter the city or state to search: ");
         String searchLocation = sc.nextLine();
 
@@ -76,19 +75,24 @@ public class AddressBookSystem {
         List<Contact> personsByState = addressBook2.viewPersonsByState(viewState);
         displayViewResult("State", personsByState);
 
-    // UC 10: Count Persons by City or State
-    System.out.print("Enter the city to count persons: ");
-    String countCity = sc.nextLine();
-    long countByCity = addressBook1.countPersonsByCity(countCity);
-    System.out.println("Number of persons in " + countCity + ": " + countByCity);
+        // UC 10: Count Persons by City or State
+        System.out.print("Enter the city to count persons: ");
+        String countCity = sc.nextLine();
+        long countByCity = addressBook1.countPersonsByCity(countCity);
+        System.out.println("Number of persons in " + countCity + ": " + countByCity);
 
-    System.out.print("Enter the state to count persons: ");
-    String countState = sc.nextLine();
-    long countByState = addressBook2.countPersonsByState(countState);
-    System.out.println("Number of persons in " + countState + ": " + countByState);
+        System.out.print("Enter the state to count persons: ");
+        String countState = sc.nextLine();
+        long countByState = addressBook2.countPersonsByState(countState);
+        System.out.println("Number of persons in " + countState + ": " + countByState);
 
-    sc.close();
+        // UC 11: Sort entries by Person's name
+        addressBook1.sortByName();
+        System.out.println("Sorted Contacts by Name:");
+        addressBook1.contactList.forEach(System.out::println);
+
     }
+
     private static void displaySearchResult(String addressBookName, List<Contact> result) {
         System.out.println("Search result in " + addressBookName + ":");
         if (result.isEmpty()) {
@@ -97,6 +101,7 @@ public class AddressBookSystem {
             result.forEach(Contact::printContact);
         }
     }
+
     private static void displayViewResult(String category, List<Contact> result) {
         System.out.println("Persons in " + category + ":");
         if (result.isEmpty()) {

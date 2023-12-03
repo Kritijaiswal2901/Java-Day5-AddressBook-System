@@ -76,6 +76,20 @@ public class Contact {
         return Objects.equals(firstName, contact.firstName) && Objects.equals(lastName, contact.lastName);
     }
 
+    @Override
+public String toString() {
+    return "Contact: " +
+            "First Name: " + firstName +
+            ", Last Name: " + lastName +
+            ", Address: " + address +
+            ", City: " + city +
+            ", State: " + state +
+            ", Zip code: " + zipCode +
+            ", Phone Number: " + phoneNumber +
+            ", Email: " + email;
+}
+
+
 
     public void inputContact(Scanner sc) {
         System.out.println("Enter your first name : ");
