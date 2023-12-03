@@ -1,3 +1,8 @@
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -6,9 +11,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-
 public class AddressBook {
-    
+
     List<Contact> contactList;
     private Map<String, List<Contact>> cityDictionary;
     private Map<String, List<Contact>> stateDictionary;
@@ -28,10 +32,11 @@ public class AddressBook {
             System.out.println("Contact added successfully.");
         }
     }
+
     public boolean checkForDuplicate() {
         return contactList.stream().anyMatch(this::isDuplicate);
     }
-    
+
     public void deleteContact(String name) {
         Contact contact = contactList.stream()
                 .filter(c -> c.getFirstName().equalsIgnoreCase(name))
@@ -47,7 +52,6 @@ public class AddressBook {
         }
     }
 
-   
     public void askForEditContact(Scanner sc) {
         System.out.println("Enter Name to edit Contact: ");
         String name;
@@ -88,7 +92,7 @@ public class AddressBook {
                 .collect(Collectors.toList());
     }
 
-     public List<Contact> viewPersonsByCity(String city) {
+    public List<Contact> viewPersonsByCity(String city) {
         return cityDictionary.getOrDefault(city, new ArrayList<>());
     }
 
@@ -121,7 +125,7 @@ public class AddressBook {
                 .filter(contact -> contact.getCity().equalsIgnoreCase(city))
                 .count();
     }
-    
+
     public long countPersonsByState(String state) {
         return contactList.stream()
                 .filter(contact -> contact.getState().equalsIgnoreCase(state))
@@ -129,20 +133,38 @@ public class AddressBook {
     }
 
     public void sortByName() {
-    contactList.sort(Comparator.comparing(Contact::getFirstName));
-}
-public void sortByCity() {
-    contactList.sort(Comparator.comparing(Contact::getCity));
-}
+        contactList.sort(Comparator.comparing(Contact::getFirstName));
+    }
 
-public void sortByState() {
-    contactList.sort(Comparator.comparing(Contact::getState));
-}
+    public void sortByCity() {
+        contactList.sort(Comparator.comparing(Contact::getCity));
+    }
 
-public void sortByZip() {
-    contactList.sort(Comparator.comparing(Contact::getZipCode));
-}
-    
-}
+    public void sortByState() {
+        contactList.sort(Comparator.comparing(Contact::getState));
+    }
 
+    public void sortByZip() {
+        contactList.sort(Comparator.comparing(Contact::getZipCode));
+    }
 
+    public void writeToFile(String fileName) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
+            oos.writeObject(contactList);
+            System.out.println("Contacts written to file successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void readFromFile(String fileName) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
+            contactList = (List<Contact>) ois.readObject();
+            System.out.println("Contacts read from file successfully.");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+}

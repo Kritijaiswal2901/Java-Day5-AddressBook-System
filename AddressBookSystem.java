@@ -104,6 +104,15 @@ public class AddressBookSystem {
         addressBook1.sortByZip();
         addressBook1.contactList.forEach(System.out::println);
 
+        // UC 13: Write and Read from File
+        System.out.print("Enter the file name to write contacts: ");
+        String writeFileName = sc.nextLine();
+        addressBook1.writeToFile(writeFileName);
+
+        System.out.print("Enter the file name to read contacts: ");
+        String readFileName = sc.nextLine();
+        addressBook2.readFromFile(readFileName);
+
     }
 
     private static void displaySearchResult(String addressBookName, List<Contact> result) {
