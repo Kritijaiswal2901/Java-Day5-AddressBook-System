@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Contact {
@@ -6,6 +7,15 @@ public class Contact {
     public String getName() {
         return this.firstName;
     }
+
+        @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Contact contact = (Contact) obj;
+        return Objects.equals(firstName, contact.firstName) && Objects.equals(lastName, contact.lastName);
+    }
+
 
     public void inputContact(Scanner sc) {
         System.out.println("Enter your first name : ");
