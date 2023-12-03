@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 public class AddressBookSystem {
@@ -45,10 +46,31 @@ public class AddressBookSystem {
             System.out.println("No duplicate found in Address Book 1.");
         }
 
+// UC 8: Search Person in City or State across multiple AddressBooksjkfjdf
+        System.out.print("Enter the city or state to search: ");
+        String searchLocation = sc.nextLine();
+
+        // Search in the first address book
+        List<Contact> result1 = addressBook1.searchPersonInCityOrState(searchLocation);
+        displaySearchResult("Address Book 1", result1);
+
+        // Search in the second address book
+        List<Contact> result2 = addressBook2.searchPersonInCityOrState(searchLocation);
+        displaySearchResult("Address Book 2", result2);
 
         System.out.println("Enter name of contact to delete");
         String contactToDelete = sc.nextLine();
         addressBook1.deleteContact(contactToDelete);
         sc.close();
+
+    }
+
+    private static void displaySearchResult(String addressBookName, List<Contact> result) {
+        System.out.println("Search result in " + addressBookName + ":");
+        if (result.isEmpty()) {
+            System.out.println("No matching contacts found.");
+        } else {
+            result.forEach(Contact::printContact);
+        }
     }
 }

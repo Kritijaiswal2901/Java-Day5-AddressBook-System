@@ -1,19 +1,21 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
 
 public class AddressBook {
     
     HashMap<String, Contact> contactList;
-
     public AddressBook() {
         contactList = new HashMap<String, Contact>();
     }
-
     public void addContact(Contact contact) {
         if (isDuplicate(contact)) {
             System.out.println("Duplicate entry found. Contact not added.");
         } else {
-            contactList.put(contact.getName(), contact);
+            contactList.put(contact.getFirstName(), contact);
             System.out.println("Contact added successfully.");
         }
     }
@@ -26,8 +28,6 @@ public class AddressBook {
     public boolean checkForDuplicate() {
         return contactList.values().stream().anyMatch(contact -> isDuplicate(contact));
     }
-
-
     public void deleteContact(String name) {
         if (contactList.containsKey(name)) {
             contactList.remove(name);
@@ -36,7 +36,6 @@ public class AddressBook {
             System.out.println("Contact not found.");
         }
     }
-
     public Contact getContactbyName(String name) {
         if (contactList.containsKey(name)) {
             return contactList.get(name);
@@ -69,5 +68,12 @@ public class AddressBook {
             moreContact = sc.nextLine();
         } while (moreContact.equalsIgnoreCase("y"));
     }
+
+    public List<Contact> searchPersonInCityOrState(String location) {
+        return contactList.values().stream()
+                .filter(contact -> contact.getCity().equalsIgnoreCase(location)
+                        || contact.getState().equalsIgnoreCase(location))
+                .collect(Collectors.toList());
+    }    
 
 }
