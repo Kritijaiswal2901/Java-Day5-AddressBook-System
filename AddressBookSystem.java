@@ -35,9 +35,10 @@ public class AddressBookSystem {
         // Use case: Adding contacts with duplicate check
         addressBook.insertContact(sc);
 
-        // Display all contacts in the address book
-        System.out.println("All Contacts:");
-        addressBook.contactList.values().forEach(Contact::printContact);
+       // Display all contacts in the address book
+       System.out.println("All Contacts:");
+         addressBook1.contactList.forEach(Contact::printContact);
+
 
           // UC 7: Duplicate Check
           if (addressBook1.checkForDuplicate()) {
@@ -61,7 +62,19 @@ public class AddressBookSystem {
         System.out.println("Enter name of contact to delete");
         String contactToDelete = sc.nextLine();
         addressBook1.deleteContact(contactToDelete);
-        sc.close();
+
+        // UC 9: View Persons by City or State
+        // View persons by city
+        System.out.print("Enter the city to view persons: ");
+        String viewCity = sc.nextLine();
+        List<Contact> personsByCity = addressBook1.viewPersonsByCity(viewCity);
+        displayViewResult("City", personsByCity);
+
+        // View persons by state
+        System.out.print("Enter the state to view persons: ");
+        String viewState = sc.nextLine();
+        List<Contact> personsByState = addressBook2.viewPersonsByState(viewState);
+        displayViewResult("State", personsByState);
 
     }
 
@@ -69,6 +82,14 @@ public class AddressBookSystem {
         System.out.println("Search result in " + addressBookName + ":");
         if (result.isEmpty()) {
             System.out.println("No matching contacts found.");
+        } else {
+            result.forEach(Contact::printContact);
+        }
+    }
+    private static void displayViewResult(String category, List<Contact> result) {
+        System.out.println("Persons in " + category + ":");
+        if (result.isEmpty()) {
+            System.out.println("No persons found.");
         } else {
             result.forEach(Contact::printContact);
         }
