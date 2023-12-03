@@ -3,15 +3,30 @@ import java.util.Scanner;
 
 public class AddressBook {
     
-    private HashMap<String, Contact> contactList;
+    HashMap<String, Contact> contactList;
 
     public AddressBook() {
         contactList = new HashMap<String, Contact>();
     }
 
     public void addContact(Contact contact) {
-        contactList.put(contact.getName(), contact);
+        if (isDuplicate(contact)) {
+            System.out.println("Duplicate entry found. Contact not added.");
+        } else {
+            contactList.put(contact.getName(), contact);
+            System.out.println("Contact added successfully.");
+        }
     }
+
+    private boolean isDuplicate(Contact contact) {
+        return contactList.values().stream().anyMatch(c -> c.equals(contact));
+    }
+
+    // UC 7: Method to check for duplicates in the AddressBook
+    public boolean checkForDuplicate() {
+        return contactList.values().stream().anyMatch(contact -> isDuplicate(contact));
+    }
+
 
     public void deleteContact(String name) {
         if (contactList.containsKey(name)) {
