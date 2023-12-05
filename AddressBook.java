@@ -33,8 +33,21 @@ public class AddressBook {
         }
     }
 
+    public Boolean isDuplicateContactFound(String name) {
+        for (Contact contact : contactList) {
+            if ((contact.getFirstName() + contact.getLastName()).equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean checkForDuplicate() {
         return contactList.stream().anyMatch(this::isDuplicate);
+    }
+
+    private boolean isDuplicate(Contact contact) {
+        return contactList.stream().anyMatch(c -> c.equals(contact));
     }
 
     public void deleteContact(String name) {
@@ -70,9 +83,13 @@ public class AddressBook {
         String moreContact = "y";
         do {
             Contact contact = new Contact();
-            contact.inputContact(sc);
-            contact.printContact();
-            this.addContact(contact);
+            Boolean isSuccess = contact.inputContact(sc, this);
+            if (isSuccess) {
+                contact.printContact();
+                this.addContact(contact);
+            } else {
+                System.out.println("Duplicate Contact found with same name.");
+            }
             System.out.println("Want to add more contact? Press Y: ");
             moreContact = sc.nextLine();
         } while (moreContact.equalsIgnoreCase("y"));
@@ -114,10 +131,6 @@ public class AddressBook {
             v.remove(contact);
             return v.isEmpty() ? null : v;
         });
-    }
-
-    private boolean isDuplicate(Contact contact) {
-        return contactList.stream().anyMatch(c -> c.equals(contact));
     }
 
     public long countPersonsByCity(String city) {

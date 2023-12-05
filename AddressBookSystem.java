@@ -3,8 +3,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class AddressBookSystem {
-
     HashMap<String, AddressBook> addressBooks;
+
+    HashMap<String, AddressBook> getAddressBooks() {
+        return addressBooks;
+    }
 
     public AddressBookSystem() {
         addressBooks = new HashMap<String, AddressBook>();
@@ -17,23 +20,24 @@ public class AddressBookSystem {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to Address Book Program");
-
         AddressBookSystem addressBookSystem = new AddressBookSystem();
-
         AddressBook addressBook1 = new AddressBook();
+
+        System.out.println("Adding contacts to AddressBook1");
         addressBook1.insertContact(sc);
-        addressBook1.askForEditContact(sc);
+        // addressBook1.askForEditContact(sc);
 
         AddressBook addressBook2 = new AddressBook();
+        System.out.println("Adding contacts to AddressBook2");
         addressBook2.insertContact(sc);
-        addressBook2.askForEditContact(sc);
+        // addressBook2.askForEditContact(sc);
 
         addressBookSystem.addAddressBook("Address book 1", addressBook1);
         addressBookSystem.addAddressBook("Address book 2", addressBook2);
-        AddressBook addressBook = new AddressBook();
+        // AddressBook addressBook = new AddressBook();
 
         // Use case: Adding contacts with duplicate check
-        addressBook.insertContact(sc);
+        // addressBook.insertContact(sc);
 
         // Display all contacts in the address book
         System.out.println("All Contacts:");
@@ -46,45 +50,51 @@ public class AddressBookSystem {
             System.out.println("No duplicate found in Address Book 1.");
         }
 
-        // UC 8: Search Person in City or State across multiple AddressBooksjkfjdf
+        // UC 8: Search Person in City or State across multiple AddressBooks
         System.out.print("Enter the city or state to search: ");
         String searchLocation = sc.nextLine();
 
-        // Search in the first address book
-        List<Contact> result1 = addressBook1.searchPersonInCityOrState(searchLocation);
-        displaySearchResult("Address Book 1", result1);
+        // Search in the address book
+        for (AddressBook addressBook : addressBookSystem.getAddressBooks().values()) {
+            List<Contact> result = addressBook.searchPersonInCityOrState(searchLocation);
+            displaySearchResult("Address Book", result);
+        }
 
-        // Search in the second address book
-        List<Contact> result2 = addressBook2.searchPersonInCityOrState(searchLocation);
-        displaySearchResult("Address Book 2", result2);
-
-        System.out.println("Enter name of contact to delete");
-        String contactToDelete = sc.nextLine();
-        addressBook1.deleteContact(contactToDelete);
+        // System.out.println("Enter name of contact to delete");
+        // String contactToDelete = sc.nextLine();
+        // addressBook1.deleteContact(contactToDelete);
 
         // UC 9: View Persons by City or State
         // View persons by city
         System.out.print("Enter the city to view persons: ");
         String viewCity = sc.nextLine();
-        List<Contact> personsByCity = addressBook1.viewPersonsByCity(viewCity);
-        displayViewResult("City", personsByCity);
+        for (AddressBook addressBook : addressBookSystem.getAddressBooks().values()) {
+            List<Contact> personsByCity = addressBook.viewPersonsByCity(viewCity);
+            displayViewResult("City", personsByCity);
+        }
 
         // View persons by state
         System.out.print("Enter the state to view persons: ");
         String viewState = sc.nextLine();
-        List<Contact> personsByState = addressBook2.viewPersonsByState(viewState);
-        displayViewResult("State", personsByState);
+        for (AddressBook addressBook : addressBookSystem.getAddressBooks().values()) {
+            List<Contact> personsByState = addressBook.viewPersonsByState(viewState);
+            displayViewResult("State", personsByState);
+        }
 
         // UC 10: Count Persons by City or State
         System.out.print("Enter the city to count persons: ");
         String countCity = sc.nextLine();
-        long countByCity = addressBook1.countPersonsByCity(countCity);
-        System.out.println("Number of persons in " + countCity + ": " + countByCity);
+        for (AddressBook addressBook : addressBookSystem.getAddressBooks().values()) {
+            long countByCity = addressBook.countPersonsByCity(countCity);
+            System.out.println("Number of persons in " + countCity + ": " + countByCity);
+        }
 
         System.out.print("Enter the state to count persons: ");
         String countState = sc.nextLine();
-        long countByState = addressBook2.countPersonsByState(countState);
-        System.out.println("Number of persons in " + countState + ": " + countByState);
+        for (AddressBook addressBook : addressBookSystem.getAddressBooks().values()) {
+            long countByState = addressBook.countPersonsByState(countState);
+            System.out.println("Number of persons in " + countState + ": " + countByState);
+        }
 
         // UC 11: Sort entries by Person's name
         addressBook1.sortByName();
@@ -92,26 +102,41 @@ public class AddressBookSystem {
         addressBook1.contactList.forEach(System.out::println);
 
         // UC 12: Sort entries by City, State, or Zip
-        System.out.println("Sorting by City:");
-        addressBook1.sortByCity();
+        System.out.println("1: Sort by Name");
+        System.out.println("2: Sort by City");
+        System.out.println("3: Sort by State");
+        System.out.println("4: Sort by ZipCode");
+        System.out.println("Enter You Choice: ");
+        int choice = sc.nextInt();
+
+        switch (choice) {
+            case 1:
+                System.out.println("Sorting by Name:");
+                addressBook1.sortByName();
+                break;
+            case 2:
+                System.out.println("Sorting by City:");
+                addressBook1.sortByCity();
+                break;
+            case 3:
+                System.out.println("Sorting by State:");
+                addressBook1.sortByState();
+                break;
+            case 4:
+                System.out.println("Sorting by Zip Code:");
+                addressBook1.sortByZip();
+                break;
+        }
         addressBook1.contactList.forEach(System.out::println);
 
-        System.out.println("Sorting by State:");
-        addressBook1.sortByState();
-        addressBook1.contactList.forEach(System.out::println);
+        // // UC 13: Write and Read from File
+        // System.out.print("Enter the file name to write contacts: ");
+        // String writeFileName = sc.nextLine();
+        // addressBook1.writeToFile(writeFileName);
 
-        System.out.println("Sorting by Zip:");
-        addressBook1.sortByZip();
-        addressBook1.contactList.forEach(System.out::println);
-
-        // UC 13: Write and Read from File
-        System.out.print("Enter the file name to write contacts: ");
-        String writeFileName = sc.nextLine();
-        addressBook1.writeToFile(writeFileName);
-
-        System.out.print("Enter the file name to read contacts: ");
-        String readFileName = sc.nextLine();
-        addressBook2.readFromFile(readFileName);
+        // System.out.print("Enter the file name to read contacts: ");
+        // String readFileName = sc.nextLine();
+        // addressBook2.readFromFile(readFileName);
 
     }
 
