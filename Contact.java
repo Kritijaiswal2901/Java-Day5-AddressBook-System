@@ -1,9 +1,10 @@
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Contact {
+public class Contact implements Serializable {
     private String firstName, lastName, address, city, state, zipCode, phoneNumber, email;
 
     public String getFirstName() {

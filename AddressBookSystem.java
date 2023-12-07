@@ -1,3 +1,8 @@
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -16,6 +21,34 @@ public class AddressBookSystem {
     public void addAddressBook(String name, AddressBook addressBook) {
         addressBooks.put(name, addressBook);
     }
+    
+    public void writeAddressBookToFile(String fileName, AddressBook addressBook) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(addressBook);
+            out.close();
+            fileOut.close();
+            System.out.println("AddressBook written to file successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public AddressBook readAddressBookFromFile(String fileName) {
+        try {
+            FileInputStream fileIn = new FileInputStream(fileName);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            AddressBook addressBook = (AddressBook) in.readObject();
+            in.close();
+            fileIn.close();
+            System.out.println("Contacts read from file successfully.");
+            return addressBook;
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -25,6 +58,10 @@ public class AddressBookSystem {
 
         System.out.println("Adding contacts to AddressBook1");
         addressBook1.insertContact(sc);
+        addressBookSystem.writeAddressBookToFile("AddressBook1.dat", addressBook1);
+
+        AddressBook readFromFile = addressBookSystem.readAddressBookFromFile("AddressBook1.dat");
+        displaySearchResult("Address Book 1", readFromFile.contactList);
         // addressBook1.askForEditContact(sc);
 
         AddressBook addressBook2 = new AddressBook();

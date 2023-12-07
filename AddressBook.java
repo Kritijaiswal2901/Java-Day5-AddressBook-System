@@ -3,6 +3,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-public class AddressBook {
+public class AddressBook implements Serializable {
 
     List<Contact> contactList;
     private Map<String, List<Contact>> cityDictionary;
@@ -160,24 +161,4 @@ public class AddressBook {
     public void sortByZip() {
         contactList.sort(Comparator.comparing(Contact::getZipCode));
     }
-
-    public void writeToFile(String fileName) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
-            oos.writeObject(contactList);
-            System.out.println("Contacts written to file successfully.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public void readFromFile(String fileName) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {
-            contactList = (List<Contact>) ois.readObject();
-            System.out.println("Contacts read from file successfully.");
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
