@@ -161,4 +161,8 @@ public class AddressBook implements Serializable {
     public void sortByZip() {
         contactList.sort(Comparator.comparing(Contact::getZipCode));
     }
+
+    public List<Contact> getContactList() {
+        return contactList;
+    }
 }

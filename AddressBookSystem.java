@@ -1,5 +1,9 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,7 +25,7 @@ public class AddressBookSystem {
     public void addAddressBook(String name, AddressBook addressBook) {
         addressBooks.put(name, addressBook);
     }
-    
+
     public void writeAddressBookToFile(String fileName, AddressBook addressBook) {
         try {
             FileOutputStream fileOut = new FileOutputStream(fileName);
@@ -50,6 +54,34 @@ public class AddressBookSystem {
         return null;
     }
 
+    public void writeAddressBookToFileCSV(String fileName, AddressBook addressBook) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (Contact contact : addressBook.getContactList()) {
+                writer.write(contact.toCSV());
+                writer.newLine();
+            }
+            System.out.println("AddressBook written to CSV file successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public AddressBook readAddressBookFromFileCSV(String fileName) {
+        AddressBook addressBook = new AddressBook();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                Contact contact = Contact.fromCSV(line);
+                addressBook.addContact(contact);
+            }
+            System.out.println("Contacts read from CSV file successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return addressBook;
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to Address Book Program");
@@ -59,9 +91,12 @@ public class AddressBookSystem {
         System.out.println("Adding contacts to AddressBook1");
         addressBook1.insertContact(sc);
         addressBookSystem.writeAddressBookToFile("AddressBook1.dat", addressBook1);
-
         AddressBook readFromFile = addressBookSystem.readAddressBookFromFile("AddressBook1.dat");
         displaySearchResult("Address Book 1", readFromFile.contactList);
+
+        addressBookSystem.writeAddressBookToFileCSV("AddressBook1.csv", addressBook1);
+        AddressBook readFromFileCSV = addressBookSystem.readAddressBookFromFileCSV("AddressBook1.csv");
+        displaySearchResult("Address Book 1", readFromFileCSV.contactList);
         // addressBook1.askForEditContact(sc);
 
         AddressBook addressBook2 = new AddressBook();

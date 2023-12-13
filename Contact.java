@@ -7,6 +7,29 @@ import java.util.regex.Pattern;
 public class Contact implements Serializable {
     private String firstName, lastName, address, city, state, zipCode, phoneNumber, email;
 
+    public Contact() {
+        this.firstName = "";
+        this.lastName = "";
+        this.address = "";
+        this.city = "";
+        this.state = "";
+        this.zipCode = "";
+        this.phoneNumber = "";
+        this.email = "";
+    }
+
+    public Contact(String firstName, String lastName, String address, String city, String state,
+            String zipCode, String phoneNumber, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -92,6 +115,16 @@ public class Contact implements Serializable {
                 ", Zip code: " + zipCode +
                 ", Phone Number: " + phoneNumber +
                 ", Email: " + email;
+    }
+
+    public String toCSV() {
+        return firstName + "," + lastName + "," + address + "," + city + "," + state + "," + zipCode + "," + phoneNumber
+                + "," + email;
+    }
+
+    public static Contact fromCSV(String csvString) {
+        String[] parts = csvString.split(",");
+        return new Contact(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6], parts[7]);
     }
 
     public Boolean inputContact(Scanner sc, AddressBook addressBook) {
